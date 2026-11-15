@@ -241,3 +241,14 @@ body.dark .settings-menu>button>span:first-child{background:#273550}
 body.dark .auth-card{background:var(--surface);border-color:var(--line)}
 body.dark .auth-card input,body.dark .dialog-form input,body.dark .dialog-form select,body.dark .unimate-settings-panel input,body.dark .chat-form input{background:#172235;border-color:var(--line);color:var(--text)}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+
+/* Header structure fix: keep the page title grouped under its eyebrow on desktop. */
+.topbar-title{display:flex;flex-direction:column;align-items:flex-start;min-width:0}
+.topbar-title .eyebrow{line-height:1.4}
+.topbar-title h1{margin-top:2px}
+@media(max-width:680px){
+ .topbar-heading{flex-direction:row;align-items:center;gap:9px}
+ .topbar-title{min-width:0}
+ .topbar-title .eyebrow{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+ .topbar-title h1{max-width:100%}
+}
