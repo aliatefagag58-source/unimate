@@ -67,8 +67,8 @@
         if(editingTaskId) result=await db.from('tasks').update(payload).eq('id',editingTaskId).eq('user_id',user.id);
         else result=await db.from('tasks').insert({...payload,user_id:user.id});
         if(result.error)throw result.error;
-        $('#taskDialog').close();form.reset();editingTaskId=null;$('#saveTask').textContent='إضافة المهمة';
-        await refresh();toast(editingTaskId?'تم تحديث المهمة':'تم حفظ المهمة');
+        const wasEditing=!!editingTaskId;$('#taskDialog').close();form.reset();editingTaskId=null;$('#saveTask').textContent='إضافة المهمة';
+        await refresh();toast(wasEditing?'تم تحديث المهمة':'تم حفظ المهمة');
       }catch(ex){err(ex)}
     };
     document.addEventListener('click',e=>{
@@ -107,7 +107,7 @@
   };
   const boot=()=>{
     addStyle();addCalendar();setupTaskEnhancements();setupNotes();
-    const oldGo=go;go=function(page){oldGo(page);if(page==='calendar')renderCalendar()};
+    const oldGo=go;go=function(page){oldGo(page);if(page==='calendar'){$('#pageTitle').textContent='التقويم الدراسي';renderCalendar()}};
     const oldRefresh=refresh;refresh=async function(){await oldRefresh();renderCalendar()};
     const originalAdd=$('#addTaskBtn');originalAdd?.addEventListener('click',()=>{editingTaskId=null;$('#taskForm').reset();$('#saveTask').textContent='إضافة المهمة'});
   };
