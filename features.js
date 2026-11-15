@@ -1,4 +1,4 @@
-/* UniMate Phase 3 — AI assistant, reminders and analytics */
+/* UniMate Phase 3 — AI assistant, reminders, analytics and mobile navigation */
 (() => {
   const $ = s => document.querySelector(s);
   const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -38,29 +38,49 @@
     const a=$('#analyticsCards'), r=$('#remindersList');
     if(a) a.innerHTML=statsHtml();
     if(r) r.innerHTML=remindersHtml();
+    fillFiles();
   };
+  let fillFiles = () => {};
   const run = () => {
     addNav('analytics','الإحصائيات','▥');
     addNav('reminders','التنبيهات','♧');
+    addNav('more','المزيد','☰');
     addPage('analytics','<div class="section-head"><div><h2>ملخص تقدمك 📊</h2><p>تابع إنجاز مهامك والتزامك بالحضور.</p></div></div><div id="analyticsCards" class="subject-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px"></div>');
     addPage('reminders','<div class="section-head"><div><h2>تنبيهات المواعيد 🔔</h2><p>المهام المتأخرة والقريبة من موعدها.</p></div><button id="enableUniMateNotifications" class="secondary-btn">تفعيل إشعارات المتصفح</button></div><div id="remindersList" class="task-list"></div><p class="note">تظهر التنبيهات داخل التطبيق، ويمكن للمتصفح عرض إشعار أثناء فتح UniMate. لا توجد إشعارات خلفية عند إغلاق التطبيق.</p>');
+    addPage('more',`
+      <div class="section-head"><div><h2>كل أدواتك في مكان واحد ✨</h2><p>اختار القسم اللي عايز تفتحه.</p></div></div>
+      <div class="unimate-more-grid">
+        <button class="unimate-more-card" data-open-page="attendance"><span>◷</span><b>الحضور والغياب</b><small>سجّل حضورك وتابع غيابك</small></button>
+        <button class="unimate-more-card" data-open-page="assistant"><span>✦</span><b>المساعد الذكي</b><small>اسأل واستعن بملفات موادك</small></button>
+        <button class="unimate-more-card" data-open-page="analytics"><span>▥</span><b>الإحصائيات</b><small>شوف تقدمك وإنجازك</small></button>
+        <button class="unimate-more-card" data-open-page="reminders"><span>♧</span><b>التنبيهات</b><small>تابع مواعيد مهامك</small></button>
+        <button class="unimate-more-card" data-open-page="profile"><span>⚙</span><b>حسابي والإعدادات</b><small>بياناتك وكلمة المرور واللغة والمظهر</small></button>
+      </div>`);
     refreshPages();
+
+    // Keep the mobile "More" tab selected while viewing any secondary section.
+    const originalGo = go;
+    go = function(pageName) {
+      originalGo(pageName);
+      const secondary = ['attendance','assistant','analytics','reminders','profile'];
+      document.querySelectorAll('.nav-item').forEach(b => {
+        if (b.dataset.page === 'more') b.classList.toggle('active', secondary.includes(pageName) || pageName === 'more');
+      });
+      if(pageName==='more') $('#pageTitle').textContent='المزيد';
+      if(pageName==='analytics') $('#pageTitle').textContent='الإحصائيات';
+      if(pageName==='reminders') $('#pageTitle').textContent='التنبيهات';
+      refreshPages();
+    };
+
     document.addEventListener('click', e => {
-      const nav=e.target.closest('[data-page]');
-      if(nav && ['analytics','reminders'].includes(nav.dataset.page)){
-        if(typeof go==='function') go(nav.dataset.page);
-        else {
-          document.querySelectorAll('.page').forEach(p=>p.classList.toggle('active',p.id==='page-'+nav.dataset.page));
-          document.querySelectorAll('.nav-item').forEach(b=>b.classList.toggle('active',b===nav));
-        }
-        $('#pageTitle').textContent=nav.dataset.page==='analytics'?'الإحصائيات':'التنبيهات';
-        refreshPages();
-      }
+      const target=e.target.closest('[data-open-page]');
+      if(target){ go(target.dataset.openPage); return; }
       if(e.target.closest('#enableUniMateNotifications')){
         if(!('Notification' in window)){ alert('المتصفح لا يدعم الإشعارات.'); return; }
         Notification.requestPermission().then(p=>{ if(p==='granted') new Notification('UniMate',{body:'تم تفعيل إشعارات التذكير أثناء استخدام التطبيق.'}); });
       }
     });
+
     const originalRender=typeof renderAll==='function'?renderAll:null;
     if(typeof originalRender==='function' && !originalRender.__phase3){
       const wrapped=function(){ const v=originalRender.apply(this,arguments); refreshPages(); return v; };
@@ -73,14 +93,13 @@
       fileLabel.style.cssText='display:block;margin:10px 0;font-size:.9rem';
       fileLabel.innerHTML='إرفاق ملف من موادك (اختياري) <select id="aiStudyFile" style="display:block;width:100%;margin-top:6px;padding:10px;border-radius:10px"><option value="">بدون ملف</option></select>';
       form.before(fileLabel);
-      const fillFiles=()=>{
+      fillFiles=()=>{
         const sel=$('#aiStudyFile'); if(!sel)return;
         const selected=sel.value; sel.innerHTML='<option value="">بدون ملف</option>';
         getData().files.forEach(f=>{const o=document.createElement('option');o.value=f.id;o.textContent=f.file_name;sel.appendChild(o)});
         sel.value=selected;
       };
       fillFiles();
-      const originalSubmit=form.onsubmit;
       form.onsubmit=async e=>{
         e.preventDefault();
         const message=input.value.trim(); if(!message)return;
@@ -102,7 +121,6 @@
         }catch(err){wait.textContent='حصلت مشكلة: '+(err.message||'تعذر الاتصال بالمساعد.');}
         messages.scrollTop=messages.scrollHeight;
       };
-      if(typeof originalSubmit==='function') form.dataset.previousHandler='replaced';
     }
     setInterval(refreshPages,5000);
   };
