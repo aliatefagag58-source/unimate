@@ -21,3 +21,5 @@ body.dark{--bg:#171725;--surface:#222235;--text:#f0effb;--muted:#a5a3ba;--line:#
   .unimate-more-card{padding:14px;min-height:120px}
 }
 @media(max-width:360px){.unimate-more-grid{grid-template-columns:1fr}}
+
+#nav .nav-item[data-page="more"]{display:none}
