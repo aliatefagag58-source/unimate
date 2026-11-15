@@ -86,14 +86,36 @@
     setTheme(localStorage.getItem("unimate_theme_" + user.id) || (localStorage.getItem("unimate_dark") === "true" ? "dark" : "light"));
   }
   function addSettingsUI() {
-    const nav = $("#nav");
     const main = $(".main");
-    if (!nav || !main || $("#page-profile")) return;
-    const navButton = document.createElement("button");
-    navButton.className = "nav-item";
-    navButton.dataset.page = "profile";
-    navButton.innerHTML = "<span>⚙</span> حسابي والإعدادات";
-    nav.appendChild(navButton);
+    if (!main || $("#page-profile")) return;
+    const settingsBtn = $("#settingsBtn");
+    if (settingsBtn && !$("#settingsMenu")) {
+      const menu = document.createElement("div");
+      menu.id = "settingsMenu";
+      menu.className = "settings-menu";
+      menu.innerHTML = '<div class="settings-menu-head"><span class="settings-menu-avatar">⚙</span><div><b>إعدادات UniMate</b><small>ظبّط تجربتك زي ما تحب</small></div></div><button type="button" data-settings-action="profile"><span>👤</span><span><b>حسابي وبياناتي</b><small>الاسم والبريد وكلمة المرور</small></span><i>‹</i></button><button type="button" data-settings-action="theme"><span>🌙</span><span><b>المظهر</b><small>فاتح أو داكن</small></span><i>‹</i></button><button type="button" data-settings-action="language"><span>🌐</span><span><b>لغة التطبيق</b><small>العربية أو English</small></span><i>‹</i></button>';
+      settingsBtn.insertAdjacentElement("afterend", menu);
+      settingsBtn.addEventListener("click", () => {
+        const open = menu.classList.toggle("open");
+        settingsBtn.setAttribute("aria-expanded", String(open));
+      });
+      menu.addEventListener("click", e => {
+        const item = e.target.closest("[data-settings-action]");
+        if (!item) return;
+        menu.classList.remove("open");
+        settingsBtn.setAttribute("aria-expanded", "false");
+        const action = item.dataset.settingsAction;
+        if (action === "profile") go("profile");
+        if (action === "theme") setTheme(document.body.classList.contains("dark") ? "light" : "dark");
+        if (action === "language") setLanguage(lang === "ar" ? "en" : "ar");
+      });
+      document.addEventListener("click", e => {
+        if (!e.target.closest("#settingsMenu") && !e.target.closest("#settingsBtn")) {
+          menu.classList.remove("open");
+          settingsBtn.setAttribute("aria-expanded", "false");
+        }
+      });
+    }
 
     const page = document.createElement("section");
     page.className = "page";
@@ -132,7 +154,7 @@
       .unimate-settings-panel input{display:block;width:100%;margin-top:7px;border:1px solid var(--line);background:var(--bg);padding:11px 13px;border-radius:10px;color:var(--text)}
       .unimate-settings-panel input[readonly]{opacity:.7}
       .unimate-setting-row{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-top:1px solid var(--line);font-size:13px}
-      @media(max-width:680px){.unimate-settings-grid{grid-template-columns:1fr}.nav-item{width:16.66%}}
+      @media(max-width:680px){.unimate-settings-grid{grid-template-columns:1fr}}
     `;
     document.head.appendChild(style);
 
