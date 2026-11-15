@@ -1,0 +1,1 @@
+window.UNIMATE_CONFIG={supabaseUrl:"https://ivghsckhotfkrpdzosdx.supabase.co",supabaseKey:"sb_publishable_Y6YWxY04Bvx7VchjVPJsPQ_7TwTjRem"};
