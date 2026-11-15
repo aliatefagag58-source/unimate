@@ -15,7 +15,7 @@
     section.className = 'page'; section.id = 'page-'+id; section.innerHTML = html;
     document.querySelector('.main footer')?.before(section);
   };
-  const getData = () => ({subjects: window.subjects || [], tasks: window.tasks || [], attendance: window.attendance || [], files: window.files || []});
+  const getData = () => ({subjects: (typeof subjects!=='undefined'?subjects:[]), tasks: (typeof tasks!=='undefined'?tasks:[]), attendance: (typeof attendance!=='undefined'?attendance:[]), files: (typeof files!=='undefined'?files:[])});
   const statsHtml = () => {
     const d=getData(), total=d.tasks.length, done=d.tasks.filter(x=>x.is_done).length;
     const present=d.attendance.filter(x=>x.status==='present').length;
@@ -48,7 +48,7 @@
     document.addEventListener('click', e => {
       const nav=e.target.closest('[data-page]');
       if(nav && ['analytics','reminders'].includes(nav.dataset.page)){
-        if(typeof window.go==='function') window.go(nav.dataset.page);
+        if(typeof go==='function') go(nav.dataset.page);
         else {
           document.querySelectorAll('.page').forEach(p=>p.classList.toggle('active',p.id==='page-'+nav.dataset.page));
           document.querySelectorAll('.nav-item').forEach(b=>b.classList.toggle('active',b===nav));
@@ -61,10 +61,10 @@
         Notification.requestPermission().then(p=>{ if(p==='granted') new Notification('UniMate',{body:'تم تفعيل إشعارات التذكير أثناء استخدام التطبيق.'}); });
       }
     });
-    const originalRender=window.renderAll;
+    const originalRender=typeof renderAll==='function'?renderAll:null;
     if(typeof originalRender==='function' && !originalRender.__phase3){
       const wrapped=function(){ const v=originalRender.apply(this,arguments); refreshPages(); return v; };
-      wrapped.__phase3=true; window.renderAll=wrapped;
+      wrapped.__phase3=true; renderAll=wrapped;
     }
     const form=$('#chatForm'), input=$('#chatInput'), messages=$('#chatMessages');
     if(form && input && messages){
@@ -90,11 +90,11 @@
           const d=getData(), chosen=d.files.find(f=>f.id===$('#aiStudyFile')?.value);
           const body={message,history};
           if(chosen){
-            const {data,error}=await window.db.storage.from('unimate-files').createSignedUrl(chosen.storage_path,300);
+            const {data,error}=await db.storage.from('unimate-files').createSignedUrl(chosen.storage_path,300);
             if(error)throw error;
             body.file={url:data.signedUrl,mime_type:chosen.mime_type,file_name:chosen.file_name};
           }
-          const {data,error}=await window.db.functions.invoke('unimate-ai',{body});
+          const {data,error}=await db.functions.invoke('unimate-ai',{body});
           if(error)throw error;
           if(data?.error)throw new Error(data.error);
           const answer=data?.answer||'لم يصل رد من المساعد.';
