@@ -70,6 +70,7 @@
         <button class="unimate-more-card" data-open-page="assistant"><span>✦</span><b>المساعد الذكي</b><small>اسأل واستعن بملفات موادك</small></button>
         <button class="unimate-more-card" data-open-page="analytics"><span>▥</span><b>الإحصائيات</b><small>شوف تقدمك وإنجازك</small></button>
         <button class="unimate-more-card" data-open-page="reminders"><span>♧</span><b>التنبيهات</b><small>تابع مواعيد مهامك</small></button>
+        <button class="unimate-more-card" data-open-page="calendar"><span>▦</span><b>التقويم الدراسي</b><small>شوف مواعيد مهامك على التقويم</small></button>
       </div>`);
     refreshPages();
 
