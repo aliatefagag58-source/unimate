@@ -23,3 +23,11 @@ body.dark{--bg:#171725;--surface:#222235;--text:#f0effb;--muted:#a5a3ba;--line:#
 @media(max-width:360px){.unimate-more-grid{grid-template-columns:1fr}}
 
 @media(min-width:681px){#nav .nav-item[data-page="more"]{display:none}}
+
+/* UniMate mobile nav hardening v4 */
+@media(max-width:680px){
+ #nav{display:flex!important;justify-content:space-between!important;align-items:stretch!important;gap:0!important}
+ #nav>.nav-item{display:none!important;width:25%!important;min-width:0!important;flex:1 1 25%!important}
+ #nav>.nav-item[data-page="home"],#nav>.nav-item[data-page="subjects"],#nav>.nav-item[data-page="tasks"],#nav>.nav-item[data-page="more"]{display:flex!important}
+}
+@media(min-width:681px){#nav>.nav-item[data-page="more"]{display:none!important}}
