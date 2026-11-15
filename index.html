@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#6757d9">
+  <meta name="description" content="UniMate — رفيقك لتنظيم الدراسة">
+  <title>UniMate | نظّم دراستك</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="#"><span class="brand-mark">U</span><span>UniMate<small>رفيقك الدراسي</small></span></a>
+      <div class="profile"><div class="avatar">👋</div><div><b>أهلاً بيك!</b><small>مساحتك الدراسية</small></div></div>
+      <nav id="nav">
+        <button class="nav-item active" data-page="home"><span>⌂</span> الرئيسية</button>
+        <button class="nav-item" data-page="subjects"><span>▤</span> موادي</button>
+        <button class="nav-item" data-page="tasks"><span>✓</span> مهامي</button>
+        <button class="nav-item" data-page="attendance"><span>◷</span> الحضور والغياب</button>
+        <button class="nav-item" data-page="assistant"><span>✦</span> المساعد الذكي</button>
+      </nav>
+      <div class="sidebar-bottom"><span class="dot"></span> بياناتك محفوظة على هذا الجهاز</div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div><div class="eyebrow" id="todayLabel">مساحتك الدراسية</div><h1 id="pageTitle">الرئيسية</h1></div>
+        <div class="top-actions"><button id="themeBtn" class="icon-btn" title="تغيير المظهر">☾</button><button id="langBtn" class="icon-btn" title="English">EN</button><div class="avatar small">U</div></div>
+      </header>
+
+      <section class="page active" id="page-home">
+        <div class="welcome-card">
+          <div><span class="welcome-tag">خطوة صغيرة كل يوم ✨</span><h2>خلّي يومك الدراسي<br>أكثر ترتيبًا وهدوءًا.</h2><p>كل اللي يخص مذاكرتك في مكان واحد.</p><button class="primary-btn" data-goto="tasks">رتّب مهامك <span>←</span></button></div>
+          <div class="welcome-art">📚<span>✦</span></div>
+        </div>
+        <div class="section-head"><div><h2>نظرة سريعة</h2><p>ملخص مساحتك الدراسية</p></div></div>
+        <div class="stats-grid">
+          <article class="stat-card"><div class="stat-icon purple">▤</div><span>المواد الدراسية</span><strong id="statSubjects">0</strong><small>مادة مضافة</small></article>
+          <article class="stat-card"><div class="stat-icon mint">✓</div><span>المهام المكتملة</span><strong id="statDone">0</strong><small id="statTasksHint">من 0 مهام</small></article>
+          <article class="stat-card"><div class="stat-icon peach">◷</div><span>نسبة الحضور</span><strong id="statAttendance">—</strong><small>لجميع المواد</small></article>
+        </div>
+        <div class="two-col">
+          <section class="panel"><div class="panel-head"><div><h3>مهامك القادمة</h3><p>خليك سابق بخطوة</p></div><button class="text-btn" data-goto="tasks">عرض الكل</button></div><div id="homeTasks" class="empty-state">مفيش مهام لسه. أضف أول مهمة ليك ✍️</div></section>
+          <section class="panel"><div class="panel-head"><div><h3>موادك الدراسية</h3><p>ملفاتك وملاحظاتك في مكان واحد</p></div><button class="text-btn" data-goto="subjects">عرض الكل</button></div><div id="homeSubjects" class="empty-state">أضف موادك عشان تبدأ تنظيمها 📚</div></section>
+        </div>
+      </section>
+
+      <section class="page" id="page-subjects">
+        <div class="section-head"><div><h2>موادي الدراسية</h2><p>أنشئ مادة واجمع ملفاتها وملاحظاتها</p></div><button class="primary-btn" id="addSubjectBtn">＋ إضافة مادة</button></div>
+        <div id="subjectsList" class="subject-grid"></div>
+      </section>
+
+      <section class="page" id="page-tasks">
+        <div class="section-head"><div><h2>قائمة المهام</h2><p>تابع واجباتك ومواعيد مذاكرتك</p></div><button class="primary-btn" id="addTaskBtn">＋ مهمة جديدة</button></div>
+        <div class="filter-row"><button class="filter active" data-filter="all">الكل</button><button class="filter" data-filter="open">غير مكتملة</button><button class="filter" data-filter="done">مكتملة</button></div>
+        <div id="tasksList" class="task-list"></div>
+      </section>
+
+      <section class="page" id="page-attendance">
+        <div class="section-head"><div><h2>الحضور والغياب</h2><p>سجّل حضورك وتابع التزامك بكل مادة</p></div></div>
+        <div id="attendanceList" class="attendance-list"></div>
+        <p class="note">يتم حساب النسبة من سجلات الحضور والغياب التي تضيفها بنفسك.</p>
+      </section>
+
+      <section class="page" id="page-assistant">
+        <div class="assistant-intro"><div class="assistant-symbol">✦</div><div><h2>مساعد UniMate الذكي</h2><p>اسأل عن تنظيم المذاكرة أو اطلب شرح فكرة دراسية.</p></div></div>
+        <div class="chat-box"><div id="chatMessages" class="chat-messages"><div class="bubble bot">أهلاً بيك! 👋 أنا مساعدك الدراسي. أقدر أساعدك ترتب خطة مذاكرة أو أقترح طريقة لفهم موضوع. ربط الذكاء الاصطناعي الحقيقي بمفتاح API هيكون خطوة إعداد منفصلة.</div></div>
+          <form id="chatForm" class="chat-form"><input id="chatInput" placeholder="اكتب سؤالك هنا..." autocomplete="off"><button class="primary-btn" type="submit">إرسال ↑</button></form>
+        </div>
+        <div class="note">النسخة الحالية تعرض واجهة المساعد فقط؛ لم يتم توصيل نموذج ذكاء اصطناعي أو إرسال رسائلك إلى أي خدمة خارجية.</div>
+      </section>
+      <footer>UniMate <span>•</span> مساحتك، بطريقتك.</footer>
+    </main>
+  </div>
+
+  <dialog id="subjectDialog"><form method="dialog" id="subjectForm" class="dialog-form"><button class="close-btn" value="cancel" aria-label="إغلاق">×</button><span class="eyebrow">مادة جديدة</span><h2>أضف مادة دراسية</h2><label>اسم المادة<input id="subjectName" required maxlength="60" placeholder="مثال: علم النفس"></label><label>وصف مختصر <input id="subjectDesc" maxlength="100" placeholder="اختياري"></label><div class="dialog-actions"><button class="secondary-btn" value="cancel">إلغاء</button><button class="primary-btn" id="saveSubject" value="default">حفظ المادة</button></div></form></dialog>
+  <dialog id="taskDialog"><form method="dialog" id="taskForm" class="dialog-form"><button class="close-btn" value="cancel" aria-label="إغلاق">×</button><span class="eyebrow">مهمة جديدة</span><h2>إيه اللي محتاج تعمله؟</h2><label>عنوان المهمة<input id="taskName" required maxlength="100" placeholder="مثال: مراجعة المحاضرة"></label><label>المادة<select id="taskSubject"><option value="">بدون مادة محددة</option></select></label><label>تاريخ التسليم<input id="taskDate" type="date"></label><div class="dialog-actions"><button class="secondary-btn" value="cancel">إلغاء</button><button class="primary-btn" id="saveTask" value="default">إضافة المهمة</button></div></form></dialog>
+  <dialog id="filesDialog"><form method="dialog" class="dialog-form"><button class="close-btn" value="cancel" aria-label="إغلاق">×</button><span class="eyebrow">ملفات المادة</span><h2 id="filesTitle">ملفات المادة</h2><label class="upload-zone">＋ اختر ملفات PDF أو صور<input id="fileInput" type="file" accept="application/pdf,image/*" multiple hidden></label><div id="fileList" class="file-list"></div><p class="note">الملفات تُحفظ محليًا داخل هذا المتصفح على هذا الجهاز.</p><div class="dialog-actions"><button class="primary-btn" value="cancel">تم</button></div></form></dialog>
+  <script src="app.js"></script>
+</body></html>
