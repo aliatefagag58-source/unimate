@@ -12,25 +12,6 @@ body.dark{--bg:#171725;--surface:#222235;--text:#f0effb;--muted:#a5a3ba;--line:#
 .unimate-more-card>span{display:grid;place-items:center;width:39px;height:39px;border-radius:12px;background:var(--soft);color:var(--primary);font-size:21px}
 .unimate-more-card b{font-size:14px}
 .unimate-more-card small{font-size:11px;color:var(--muted)}
-@media(max-width:680px){
-  #nav{display:flex;justify-content:space-around;align-items:center;gap:2px}
-  #nav .nav-item{width:25%;min-width:0;flex:1}
-  #nav .nav-item[data-page="attendance"],#nav .nav-item[data-page="assistant"],#nav .nav-item[data-page="analytics"],#nav .nav-item[data-page="reminders"],#nav .nav-item[data-page="profile"]{display:none}
-  #nav .nav-item[data-page="more"]{display:flex}
-  .unimate-more-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-  .unimate-more-card{padding:14px;min-height:120px}
-}
-@media(max-width:360px){.unimate-more-grid{grid-template-columns:1fr}}
-
-@media(min-width:681px){#nav .nav-item[data-page="more"]{display:none}}
-
-/* UniMate mobile nav hardening v4 */
-@media(max-width:680px){
- #nav{display:flex!important;justify-content:space-between!important;align-items:stretch!important;gap:0!important}
- #nav>.nav-item{display:none!important;width:25%!important;min-width:0!important;flex:1 1 25%!important}
- #nav>.nav-item[data-page="home"],#nav>.nav-item[data-page="subjects"],#nav>.nav-item[data-page="tasks"],#nav>.nav-item[data-page="more"]{display:flex!important}
-}
-@media(min-width:681px){#nav>.nav-item[data-page="more"]{display:none!important}}
 
 /* UniMate visual refresh — calm, bright and polished */
 :root{--bg:#f3f6fc;--surface:#ffffff;--text:#202b45;--muted:#78839a;--line:#e5eaf4;--primary:#4967d6;--primary2:#7189ed;--soft:#edf1ff;--shadow:0 12px 32px rgba(40,62,120,.07)}
@@ -160,6 +141,7 @@ input:focus,select:focus{outline:3px solid rgba(88,111,224,.13);border-color:var
 .settings-menu{border-radius:20px;box-shadow:0 22px 55px rgba(26,39,82,.16)}
 .unimate-settings-panel{border-radius:21px}
 footer{padding-bottom:22px}
+@media(min-width:681px){#nav>.nav-item[data-page="more"]{display:none!important}}
 @media(max-width:950px) and (min-width:681px){
  .sidebar{width:220px}.main{margin-right:220px;width:calc(100% - 220px);padding-inline:22px}
 }
