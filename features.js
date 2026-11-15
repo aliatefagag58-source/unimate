@@ -121,7 +121,6 @@
         messages.scrollTop=messages.scrollHeight;
       };
     }
-    setInterval(refreshPages,5000);
   };
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',run,{once:true}); else run();
 })();
