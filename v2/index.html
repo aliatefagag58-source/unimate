@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f7f8fc"><meta name="description" content="UniMate — مساحة هادئة لتنظيم دراستك">
+<title>UniMate — مساحتك الدراسية</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+<div id="authView" class="auth-view">
+  <div class="auth-art"><div class="art-orbit orbit-one"></div><div class="art-orbit orbit-two"></div><div class="art-card"><span class="brand-symbol">u.</span><div class="art-books">▤</div><p>خطوة صغيرة<br>كل يوم تصنع فرقًا.</p><span class="art-spark">✳</span></div></div>
+  <form id="authForm" class="auth-panel">
+    <a class="brand" href="#"><span class="brand-symbol">u.</span><span>UniMate<small>مساحتك الدراسية</small></span></a>
+    <p class="eyebrow">أهلًا بعودتك</p><h1 id="authHeading">خلّينا ننجز حاجة حلوة اليوم.</h1><p class="muted" id="authSub">سجّل دخولك وارجع لمساحتك الدراسية.</p>
+    <label id="nameField" hidden>الاسم<input id="displayName" maxlength="60" placeholder="اسمك"></label>
+    <label>البريد الإلكتروني<input id="email" type="email" autocomplete="email" required placeholder="you@example.com"></label>
+    <label>كلمة المرور<input id="password" type="password" minlength="6" autocomplete="current-password" required placeholder="6 أحرف على الأقل"></label>
+    <button class="btn btn-primary wide" id="authSubmit">تسجيل الدخول <span>←</span></button>
+    <p id="authError" class="error-text" role="status"></p>
+    <button type="button" class="text-button wide" id="authSwitch">ليس لديك حساب؟ إنشاء حساب جديد</button>
+    <p class="tiny-note">بياناتك الدراسية خاصة بحسابك فقط.</p>
+  </form>
+</div>
+<div id="appView" class="app-view" hidden>
+  <aside class="sidebar">
+    <a class="brand" href="#"><span class="brand-symbol">u.</span><span>UniMate<small>مساحتك الدراسية</small></span></a>
+    <div class="side-profile"><div class="avatar" id="avatar">U</div><div><b id="sideName">أهلًا بيك</b><small id="sideEmail"></small></div></div>
+    <div class="nav-caption">مساحتك</div>
+    <nav class="side-nav">
+      <button class="nav-link active" data-page="home"><i>⌂</i> الرئيسية</button>
+      <button class="nav-link" data-page="subjects"><i>▤</i> موادي الدراسية</button>
+      <button class="nav-link" data-page="tasks"><i>✓</i> المهام</button>
+      <button class="nav-link" data-page="attendance"><i>◷</i> الحضور والغياب</button>
+    </nav>
+    <div class="sidebar-bottom"><div class="sync-pill"><span></span> بياناتك متزامنة</div><button class="nav-link" id="logout"><i>↪</i> تسجيل الخروج</button></div>
+  </aside>
+  <main class="main-area">
+    <header class="topbar"><div><div class="date-line" id="today"></div><h1 id="pageHeading">صباح الإنجاز ✨</h1></div><div class="top-actions"><button class="round-btn" id="themeToggle" aria-label="تغيير المظهر">☼</button><div class="top-avatar" id="topAvatar">U</div></div></header>
+    <section class="page active" id="page-home">
+      <div class="hero"><div class="hero-copy"><span class="hero-kicker">مساحتك، بطريقتك <b>✦</b></span><h2>كل إنجاز كبير<br>بيبدأ بخطوة صغيرة.</h2><p>رتّب يومك، تابع تقدمك، وخلي تركيزك على اللي يهم.</p><button class="btn hero-btn" data-go="tasks">شوف مهامك <span>←</span></button></div><div class="hero-illustration"><div class="hero-circle"></div><div class="hero-book">▤</div><span class="float-star star-a">✳</span><span class="float-star star-b">✦</span><span class="float-dot"></span></div></div>
+      <div class="section-title"><div><h2>ملخص دراستك</h2><p>نظرة سريعة على تقدمك</p></div></div>
+      <div class="stats"><article class="stat"><span class="stat-icon lavender">▤</span><div><small>المواد</small><strong id="statSubjects">0</strong><em>مادة دراسية</em></div></article><article class="stat"><span class="stat-icon mint">✓</span><div><small>المهام المكتملة</small><strong id="statDone">0</strong><em id="statTaskTotal">من 0 مهام</em></div></article><article class="stat"><span class="stat-icon peach">◷</span><div><small>نسبة الحضور</small><strong id="statAttendance">—</strong><em>لكل المواد</em></div></article></div>
+      <div class="home-columns"><section class="surface"><div class="surface-head"><div><h3>المهام القادمة</h3><p>خليك سابق بخطوة</p></div><button class="text-button" data-go="tasks">عرض الكل</button></div><div id="homeTasks" class="compact-list"></div></section><section class="surface"><div class="surface-head"><div><h3>موادك الدراسية</h3><p>كل مادة في مكانها</p></div><button class="text-button" data-go="subjects">عرض الكل</button></div><div id="homeSubjects" class="compact-list"></div></section></div>
+    </section>
+    <section class="page" id="page-subjects"><div class="section-title"><div><h2>موادي الدراسية</h2><p>اجمع ملفات ومراجع كل مادة في مكان واحد.</p></div><button class="btn btn-primary" id="addSubject">＋ مادة جديدة</button></div><div id="subjectsGrid" class="subject-grid"></div></section>
+    <section class="page" id="page-tasks"><div class="section-title"><div><h2>مهامك</h2><p>خطط بسيط، واحتفل بكل خطوة.</p></div><button class="btn btn-primary" id="addTask">＋ مهمة جديدة</button></div><div class="task-filters"><button class="filter active" data-filter="all">الكل</button><button class="filter" data-filter="open">قيد التنفيذ</button><button class="filter" data-filter="done">مكتملة</button></div><div id="tasksList" class="surface task-list"></div></section>
+    <section class="page" id="page-attendance"><div class="section-title"><div><h2>الحضور والغياب</h2><p>تابع التزامك في كل مادة بسهولة.</p></div></div><div id="attendanceList" class="attendance-grid"></div></section>
+    <footer>صُنع ليكون يومك الدراسي أهدأ <span>✦</span></footer>
+  </main>
+  <nav class="mobile-nav"><button class="active" data-page="home"><i>⌂</i><span>الرئيسية</span></button><button data-page="subjects"><i>▤</i><span>موادي</span></button><button data-page="tasks"><i>✓</i><span>مهامي</span></button><button data-page="attendance"><i>◷</i><span>الحضور</span></button></nav>
+</div>
+<dialog id="subjectDialog" class="modal"><form id="subjectForm" class="modal-card"><button type="button" class="modal-close" data-close="subjectDialog">×</button><span class="eyebrow">مادة جديدة</span><h2>أضف مادة دراسية</h2><label>اسم المادة<input id="subjectName" required maxlength="60" placeholder="مثال: علم النفس"></label><label>وصف مختصر <small>اختياري</small><input id="subjectDescription" maxlength="120" placeholder="تفاصيل تساعدك تميّز المادة"></label><div class="modal-actions"><button type="button" class="btn btn-quiet" data-close="subjectDialog">إلغاء</button><button class="btn btn-primary">حفظ المادة</button></div></form></dialog>
+<dialog id="taskDialog" class="modal"><form id="taskForm" class="modal-card"><button type="button" class="modal-close" data-close="taskDialog">×</button><span class="eyebrow">مهمة جديدة</span><h2 id="taskModalHeading">إيه اللي محتاج تعمله؟</h2><label>عنوان المهمة<input id="taskName" required maxlength="100" placeholder="مثال: مراجعة المحاضرة الأولى"></label><label>المادة المرتبطة<select id="taskSubject"><option value="">بدون مادة محددة</option></select></label><div class="form-row"><label>تاريخ التسليم<input id="taskDate" type="date"></label><label>الأولوية<select id="taskPriority"><option value="medium">متوسطة</option><option value="high">عالية</option><option value="low">منخفضة</option></select></label></div><label>تفاصيل إضافية <small>اختياري</small><textarea id="taskDetails" maxlength="2000" rows="3" placeholder="اكتب أي تفاصيل تساعدك..."></textarea></label><div class="modal-actions"><button type="button" class="btn btn-quiet" data-close="taskDialog">إلغاء</button><button class="btn btn-primary">حفظ المهمة</button></div></form></dialog>
+<dialog id="filesDialog" class="modal"><div class="modal-card"><button type="button" class="modal-close" data-close="filesDialog">×</button><span class="eyebrow">مكتبة المادة</span><h2 id="filesHeading">ملفات المادة</h2><label class="upload-box">＋ اختر ملفات PDF أو صور<input id="fileInput" type="file" accept="application/pdf,image/jpeg,image/png,image/webp,image/gif" multiple hidden></label><div id="filesList" class="file-list"></div><p class="tiny-note">ملفاتك محفوظة في مساحة خاصة بحسابك.</p><div class="modal-actions"><button class="btn btn-primary" data-close="filesDialog">تم</button></div></div></dialog>
+<div id="toast" class="toast" role="status"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="./config.js"></script><script src="./app.js"></script>
+</body></html>
