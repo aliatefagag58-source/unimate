@@ -34,11 +34,27 @@
     if(!tasks.length) return '<div class="empty-state">مفيش مهام مستحقة خلال الأيام القريبة. ممتاز! 🌱</div>';
     return tasks.map(t=>'<article class="task-row"><div><b>'+esc(t.name)+'</b><div class="task-meta">'+(t.days<0?'متأخرة '+Math.abs(t.days)+' يوم':t.days===0?'موعدها النهارده':t.days===1?'موعدها بكرة':'بعد '+t.days+' أيام')+'</div></div></article>').join('');
   };
+  const checkDueNotifications = () => {
+    if (!('Notification' in window) || Notification.permission !== 'granted') return;
+    const owner = typeof user !== 'undefined' && user?.id ? user.id : 'guest';
+    const today = new Date(); today.setHours(0,0,0,0);
+    getData().tasks.filter(t => !t.is_done && t.due_date).forEach(task => {
+      const due = new Date(task.due_date + 'T00:00:00');
+      const days = Math.round((due - today) / 86400000);
+      if (days > 1) return;
+      const key = 'unimate_notice_' + owner + '_' + task.id + '_' + task.due_date;
+      if (localStorage.getItem(key)) return;
+      const detail = days < 0 ? 'المهمة متأخرة عن موعدها.' : days === 0 ? 'موعد المهمة النهارده.' : 'موعد المهمة بكرة.';
+      new Notification('UniMate — تذكير بالمهمة', { body: task.name + ' · ' + detail, tag: key });
+      localStorage.setItem(key, '1');
+    });
+  };
   const refreshPages = () => {
     const a=$('#analyticsCards'), r=$('#remindersList');
     if(a) a.innerHTML=statsHtml();
     if(r) r.innerHTML=remindersHtml();
     fillFiles();
+    checkDueNotifications();
   };
   let fillFiles = () => {};
   const run = () => {
@@ -76,7 +92,7 @@
       if(target){ go(target.dataset.openPage); return; }
       if(e.target.closest('#enableUniMateNotifications')){
         if(!('Notification' in window)){ alert('المتصفح لا يدعم الإشعارات.'); return; }
-        Notification.requestPermission().then(p=>{ if(p==='granted') new Notification('UniMate',{body:'تم تفعيل إشعارات التذكير أثناء استخدام التطبيق.'}); });
+        Notification.requestPermission().then(p=>{ if(p==='granted'){ new Notification('UniMate',{body:'تم تفعيل تذكيرات المهام أثناء استخدام التطبيق.'}); checkDueNotifications(); } });
       }
     });
 
@@ -121,6 +137,7 @@
         messages.scrollTop=messages.scrollHeight;
       };
     }
+    if (!window.__unimateReminderTimer) window.__unimateReminderTimer = window.setInterval(checkDueNotifications, 15 * 60 * 1000);
   };
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',run,{once:true}); else run();
 })();
